@@ -1,10 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
-import Footer from "./components/Footer";
-import Navbar from "./components/Navbar";
 import Product from "./pages/Product";
 import Detail from "./pages/Detail";
 import Cartpage from "./pages/Cartpage";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+
 
 function App() {
   return (
@@ -12,8 +13,8 @@ function App() {
       <BrowserRouter>
        <Routes>
         <Route path="/" element={<Product/>}/>
-        <Route path="/cart" element={<Cartpage/>}/>
-        <Route path="/details"  element={<Detail />}/>
+        <Route path="/cartpage" element={<Cartpage/>}/>
+        <Route path="/details/:pid"  element={<Detail />}/>
        </Routes>
       </BrowserRouter>
     </div>

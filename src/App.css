@@ -3,5 +3,9 @@
     padding: 0;
     box-sizing: border-box;
     font-family: sans-serif;
-    height: 100vh;
+    position:relative;
+}
+.footer{
+    position: static;
+    bottom: 0%;
 }
