@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa6";
 import axios from "axios";
 import * as ReactBootstrap from "react-bootstrap";
 
 function Detail() {
+  const { pid } = useParams();
   const [singledata, setSingledata] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  const { pid } = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,7 +38,7 @@ function Detail() {
       <div className="text-4xl text-red-600 h-[100vh] pl-6 pt-6">
         ** No product data found!
       </div>
-    ); // Error fallback if data isn't available
+    );
   }
 
   return (
@@ -85,8 +84,8 @@ function Detail() {
               Price: $ {singledata.price}
             </p>
             <Link
-              to={"/cartpage"}
-              className="mr-10 py-2 px-4 rounded-lg bg-green-700 hover:bg-green-800 text-white font-semibold mt-2 md:text-2xl text-center"
+              to={"/detail/cartpage"}
+              className="mr-10 py-1 px-4 rounded-lg bg-green-600 hover:bg-green-700 text-white font-semibold md:text-2xl flex items-center no-underline"
             >
               <button>Add Cart</button>
             </Link>

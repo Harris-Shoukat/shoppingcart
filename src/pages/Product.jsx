@@ -2,10 +2,14 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import * as ReactBootstrap from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { AddCart } from "../redux/slice/cartSlice";
 
 const Product = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchapi = async () => {
@@ -31,10 +35,6 @@ const Product = () => {
     );
   }
 
-  if (!data) {
-    console.log("No Product to show.")
-  }
-
   return (
     <div className=" py-4">
       <div className=" w-full h-10 text-center text-4xl my-6 font-mono">
@@ -54,12 +54,9 @@ const Product = () => {
               <p className="text-2xl py-1 truncate"> {item.title}</p>
               <p className="text-2xl py-1 font-bold">$ {item.price}</p>
               <div className="flex md:flex-col gap-2">
-                <Link
-                  to={"/cart"}
-                  className="w-full py-2 rounded-lg bg-green-700 hover:bg-green-800 text-white mt-2 text-2xl text-center"
-                >
-                  <button>Add Cart</button>
-                </Link>
+                  <button onClick={() => dispatch(AddCart(item))} className="w-full py-2 rounded-lg bg-green-700 hover:bg-green-800 text-white mt-2 text-2xl text-center">
+                    Add Cart
+                  </button>
                 <Link
                   to={`/details/${item.id}`}
                   className="w-full py-2 rounded-lg bg-green-700 hover:bg-green-800 text-white mt-2 text-2xl text-center"
