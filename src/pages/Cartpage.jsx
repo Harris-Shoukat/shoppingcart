@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { CiCircleRemove } from "react-icons/ci";
 import { removeCart } from "../redux/slice/cartSlice";
+import  toast from "react-hot-toast";
 
 function Cartpage() {
   const { cart, totalQuantity, totalPrice } = useSelector(
@@ -18,46 +19,54 @@ function Cartpage() {
         <div className="max-w-screen-xl mx-auto py-6 px-4">
           <div className="flex justify-between space-x-6">
             {/* Cart Items */}
-            <div className="w-3/4 space-y-4">
-              {/* Cart Item 1 */}
-              {cart.map((data) => (
-                <div
-                  key={data.id}
-                  className="relative flex justify-between items-center bg-white p-4 rounded-lg shadow-lg"
-                >
-                  <img
-                    src={data.image}
-                    alt="Product 1"
-                    className="w-32 h-32 object-cover rounded-md"
-                  />
-                  <div className="flex-1 ml-4">
-                    <h3 className="text-lg font-semibold">{data.title}</h3>
-                    <p className="text-gray-500 pt-3">$ {data.price}</p>
-                  </div>
-                  <div className="absolute right-4 top-2 text-red-600">
-                    <button onClick={()=>dispatch(removeCart(data.id))}>
-                      <CiCircleRemove
-                        className="text-3xl font-bold"
-                      />
-                    </button>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <button className="bg-gray-300 text-xl p-2 rounded">
-                      -
-                    </button>
-                    <input
-                      type="number"
-                      className="w-12 text-center border rounded p-2"
-                      value = {1}
-                      readOnly
+
+            {totalQuantity === 0 ? (
+              <div className="bg-red-50 border-red-600 border-1 p-2  rounded-lg shadow-lg w-full">
+                <p className="text-xl font-semibold text-red-700">
+                  No item is added.
+                </p>
+              </div>
+            ) : (
+              <div className="w-3/4 space-y-4">
+                {/* Cart Item 1 */}
+                {cart.map((data) => (
+                  <div
+                    key={data.id}
+                    className="relative flex justify-between items-center bg-white p-4 rounded-lg shadow-lg"
+                  >
+                    <img
+                      src={data.image}
+                      alt="Product 1"
+                      className="w-32 h-32 object-cover rounded-md"
                     />
-                    <button className="bg-gray-300 text-xl p-2 rounded">
-                      +
-                    </button>
+                    <div className="flex-1 ml-4">
+                      <h3 className="text-lg font-semibold">{data.title}</h3>
+                      <p className="text-gray-500 pt-3">$ {data.price}</p>
+                    </div>
+                    <div className="absolute right-4 top-2 text-red-600">
+                      <button onClick={() => {dispatch(removeCart(data.id)); toast.success('Item removed from cart!')}}>
+                        <CiCircleRemove className="text-3xl font-bold" />
+                        
+                      </button>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <button className="bg-gray-300 text-xl p-2 rounded">
+                        -
+                      </button>
+                      <input
+                        type="number"
+                        className="w-12 text-center border rounded p-2"
+                        value={1}
+                        readOnly
+                      />
+                      <button className="bg-gray-300 text-xl p-2 rounded">
+                        +
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
 
             {/* Summary Card */}
             <div className="w-1/4 h-[280px] bg-white p-6 rounded-lg shadow-lg mt-4 ">

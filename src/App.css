@@ -5,3 +5,6 @@
     font-family: sans-serif;
     position:relative;
 }
+.react-hot-toast {
+    top: 200px !important;
+  }

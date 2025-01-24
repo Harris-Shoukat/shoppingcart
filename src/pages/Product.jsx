@@ -1,22 +1,24 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
+import "../App.css";
 import { Link } from "react-router-dom";
-import * as ReactBootstrap from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { AddCart } from "../redux/slice/cartSlice";
+import { Spinner } from "react-bootstrap";
+import { allProducts } from "../api/fetchapi";
+import toast  from "react-hot-toast";
 
 const Product = () => {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchapi = async () => {
+    const fetchData = async () => {
       setLoading(true);
       try {
-        const res = await axios.get("https://fakestoreapi.com/products");
-        setData(res.data);
+        const products = await allProducts();
+        setData(products);
       } catch (error) {
         console.error("fetching error api", error);
       } finally {
@@ -24,20 +26,20 @@ const Product = () => {
       }
     };
 
-    fetchapi();
+    fetchData();
   }, []);
 
   if (loading) {
     return (
       <div className="text-center py-10">
-        <ReactBootstrap.Spinner animation="border" />
+        <Spinner animation="border" />
       </div>
     );
   }
 
   return (
-    <div className=" py-4">
-      <div className=" w-full h-10 text-center text-4xl my-6 font-mono">
+    <div className="py-4">
+      <div className="w-full h-10 text-center text-4xl my-6 font-mono">
         <p>New Arrival</p>
       </div>
 
@@ -48,20 +50,30 @@ const Product = () => {
             key={item.id}
           >
             <div className="py-6">
-              <img src={item.image} alt="#" className="aspect-square" />
+              <img
+                src={item.image || "path/to/fallback/image.jpg"}
+                alt={item.title}
+                className="aspect-square"
+              />
             </div>
             <div className="flex flex-col justify-center ">
               <p className="text-2xl py-1 truncate"> {item.title}</p>
               <p className="text-2xl py-1 font-bold">$ {item.price}</p>
               <div className="flex md:flex-col gap-2">
-                  <button onClick={() => dispatch(AddCart(item))} className="w-full py-2 rounded-lg bg-green-700 hover:bg-green-800 text-white mt-2 text-2xl text-center">
-                    Add Cart
-                  </button>
-                <Link
-                  to={`/details/${item.id}`}
+                <button
+                  onClick={() => {
+                    dispatch(AddCart(item));
+                    toast.success('Item added to cart!')
+                  }}
                   className="w-full py-2 rounded-lg bg-green-700 hover:bg-green-800 text-white mt-2 text-2xl text-center"
                 >
-                  <button>Details</button>
+                  Add Cart
+                </button>
+                <Link
+                  to={`/details/${item.id}`}
+                  className="w-full py-2 rounded-lg bg-green-700 hover:bg-green-800 text-white mt-2 text-2xl text-center no-underline"
+                >
+                  Details
                 </Link>
               </div>
             </div>

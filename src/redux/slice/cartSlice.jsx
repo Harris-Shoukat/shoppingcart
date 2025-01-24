@@ -6,7 +6,7 @@ const initialState = {
   totalQuantity: 0,
 };
 
-const cartSystem = createSlice({
+const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
@@ -15,8 +15,11 @@ const cartSystem = createSlice({
       state.totalPrice += action.payload.price;
       state.totalQuantity += 1;
     },
+    
 
     removeCart: (state, action) => {
+
+
       const itemToRemove = state.cart.find(
         (item) => item.id === action.payload
       );
@@ -25,7 +28,6 @@ const cartSystem = createSlice({
         const prize = state.totalPrice - itemToRemove.price;
         state.totalPrice = prize.toFixed(2);
         state.totalQuantity -= 1;
-
         state.cart = state.cart.filter((item) => item.id !== action.payload);
         if (state.cart.length === 0) {
           state.totalPrice = 0;
@@ -36,6 +38,6 @@ const cartSystem = createSlice({
   },
 });
 
-export const { AddCart, removeCart } = cartSystem.actions;
+export const { AddCart, removeCart } = cartSlice.actions;
 
-export default cartSystem.reducer;
+export default cartSlice.reducer;
