@@ -1,14 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { CiCircleRemove } from "react-icons/ci";
 import { removeCart } from "../redux/slice/cartSlice";
-import  toast from "react-hot-toast";
+import toast from "react-hot-toast";
+import { useAuth } from "../firebase/AuthContext";
+import { useNavigate } from "react-router-dom";
+import CheckoutModal from "../components/CheckoutModal";
 
 function Cartpage() {
   const { cart, totalQuantity, totalPrice } = useSelector(
     (state) => state.allCart
   );
   const dispatch = useDispatch();
+
+  //modal
+  const [isOpen, setIsOpen] = useState(false);
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
+
+  //firebase authentication
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleCheckout = () => {
+    if (user) {
+      openModal();
+    } else {
+      navigate("/login");
+      toast.error("Please login to proceed.");
+      // alert('user is not login');
+    }
+  };
 
   return (
     <>
@@ -21,7 +43,7 @@ function Cartpage() {
             {/* Cart Items */}
 
             {totalQuantity === 0 ? (
-              <div className="bg-red-50 border-red-600 border-1 p-2  rounded-lg shadow-lg w-full">
+              <div className="bg-red-100 border-red-300 border-1 p-2 rounded-lg shadow-lg w-full">
                 <p className="text-xl font-semibold text-red-700">
                   No item is added.
                 </p>
@@ -44,9 +66,13 @@ function Cartpage() {
                       <p className="text-gray-500 pt-3">$ {data.price}</p>
                     </div>
                     <div className="absolute right-4 top-2 text-red-600">
-                      <button onClick={() => {dispatch(removeCart(data.id)); toast.success('Item removed from cart!')}}>
+                      <button
+                        onClick={() => {
+                          dispatch(removeCart(data.id));
+                          toast.success("Item removed from cart!");
+                        }}
+                      >
                         <CiCircleRemove className="text-3xl font-bold" />
-                        
                       </button>
                     </div>
                     <div className="flex items-center space-x-2">
@@ -79,12 +105,16 @@ function Cartpage() {
                 <span>Total amount</span>
                 <span className="font-semibold">$ {totalPrice}</span>
               </div>
-              <button className="w-full py-3 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition">
+              <button
+                onClick={handleCheckout}
+                className="w-full py-3 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition"
+              >
                 Proceed to Checkout
               </button>
             </div>
           </div>
         </div>
+      {isOpen && <CheckoutModal closeModal={closeModal} isOpen={isOpen} />}
       </div>
     </>
   );

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa6";
 import axios from "axios";
 import * as ReactBootstrap from "react-bootstrap";
+import { TbMarquee } from "react-icons/tb";
 
 function Detail() {
   const { pid } = useParams();
@@ -43,7 +44,6 @@ function Detail() {
 
   return (
     <div className="w-4/5 h-[100vh] mx-auto py-6">
-      
       <h2 className="text-4xl py-4 font-bold text-gray-700 mb-2 break-words">
         <span className="text-4xl font-semibold">
           {" "}
@@ -51,13 +51,14 @@ function Detail() {
         </span>
       </h2>
 
+      
       <div className="w-4xl mx-auto p-4 flex flex-col md:flex-row border-2 rounded-md shadow-md">
         {/* Product Image */}
         <div className="w-full h-[400px] md:w-1/2  mb-6 md:mb-0">
           <img
             src={singledata.image}
             alt="#"
-            className="w-full h-full object-contain rounded-lg shadow-lg"
+            className="w-full h-full object-contain rounded-lg shadow-lg hover:scale-105 transition duration-500"
           />
         </div>
 

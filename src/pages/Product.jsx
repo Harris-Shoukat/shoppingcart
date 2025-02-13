@@ -39,6 +39,7 @@ const Product = () => {
 
   return (
     <div className="py-4">
+      {/* <marquee className="text-2xl">Delivery charges are waived off by zucky bhai</marquee> */}
       <div className="w-full h-10 text-center text-4xl my-6 font-mono">
         <p>New Arrival</p>
       </div>
