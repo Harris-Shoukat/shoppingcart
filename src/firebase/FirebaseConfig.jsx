@@ -1,12 +1,12 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 const firebaseConfig = {
-  apiKey: "AIzaSyDFwq8gVc80vR9Y__xaUbP5oRpJ2m0ZHDY",
-  authDomain: "shoppingcart-47445.firebaseapp.com",
-  projectId: "shoppingcart-47445",
-  storageBucket: "shoppingcart-47445.firebasestorage.app",
-  messagingSenderId: "585577608032",
-  appId: "1:585577608032:web:a8a2f930f6634c98936405"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
 };
 
 // Initialize Firebase
