@@ -7,8 +7,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Toaster } from "react-hot-toast";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/Register";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { AuthProvider } from "./firebase/AuthContext";
+import Profile from "./pages/Profile";
+import CompleteForm from "./pages/CompleteForm";
 
 function App() {
   return (
@@ -29,6 +30,8 @@ function App() {
           <Route path="/details/:pid" element={<Detail />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/completeform" element={<CompleteForm />} />
         </Routes>
       </div>
     </AuthProvider>

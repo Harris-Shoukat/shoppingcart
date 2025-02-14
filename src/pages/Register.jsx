@@ -1,30 +1,58 @@
 import React, { useState } from "react";
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
-import app from "../firebase/FirebaseConfig";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  updateProfile,
+} from "firebase/auth";
+import { db } from "../firebase/FirebaseConfig";
+import { collection, addDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
-const auth = getAuth(app);
+const auth = getAuth();
 
 const RegisterPage = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const usersCollectionRef = collection(db, "users");
+
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    createUserWithEmailAndPassword(auth, email, password).then(() => {
-      alert("Sign up successfull");
-    });
-
-    // Handle registration logic here
     if (password !== confirmPassword) {
       alert("Passwords do not match");
       return;
     }
 
-    console.log("Email:", email);
-    console.log("Password:", password);
-    console.log("Confirm Password:", confirmPassword);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+
+      await addDoc(usersCollectionRef, {
+        name: name,
+        email: email,
+        uid: user.uid,
+      });
+
+      await updateProfile(user, {
+        displayName: name,
+      });
+
+      alert("Sign up successful!");
+
+      navigate("/");
+    } catch (error) {
+      console.error("Error during registration:", error);
+      alert("Error during registration: " + error.message);
+    }
   };
 
   return (
@@ -35,6 +63,24 @@ const RegisterPage = () => {
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-600"
+            >
+              Full Name
+            </label>
+            <input
+              id="name"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+              placeholder="Enter your name"
+            />
+          </div>
+
           <div>
             <label
               htmlFor="email"
